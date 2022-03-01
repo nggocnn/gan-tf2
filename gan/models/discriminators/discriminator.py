@@ -11,7 +11,11 @@ class Discriminator(model.Model):
         super().__init__(model_parameters)
 
     def define_model(self) -> keras.Model:
-        input_layer = layers.Input(shape=self.model_parameters.input_shape)
+        input_layer = layers.Input(shape=[
+            self.model_parameters.img_height,
+            self.model_parameters.img_width,
+            self.model_parameters.num_channels
+        ])
         x = layers.Conv2D(filters=64, kernel_size=(5, 5), strides=(2, 2), padding='same')(input_layer)
         x = layers.LeakyReLU()(x)
         x = layers.Dropout(0.3)(x)

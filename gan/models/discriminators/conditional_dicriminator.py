@@ -10,7 +10,11 @@ class ConditionalDiscriminator(model.Model):
         super().__init__(model_parameters)
 
     def define_model(self) -> keras.Model:
-        input_layer = layers.Input(shape=self.model_parameters.input_shape)
+        input_layer = layers.Input(shape=[
+            self.model_parameters.img_height,
+            self.model_parameters.img_width,
+            self.model_parameters.num_channels
+        ])
 
         class_id = layers.Input(shape=[1])
         embedded_id = layers.Embedding(input_dim=10, output_dim=50)(class_id)
@@ -45,7 +49,11 @@ class ConditionalDiscriminatorCifar10(model.Model):
         super().__init__(model_parameters)
 
     def define_model(self):
-        input_layer = layers.Input(shape=[self.model_parameters.input_shape])
+        input_layer = layers.Input(shape=[
+            self.model_parameters.img_height,
+            self.model_parameters.img_width,
+            self.model_parameters.num_channels
+        ])
         class_id = layers.Input(shape=[1])
 
         embedded_id = layers.Embedding(input_dim=10, output_dim=50)(class_id)

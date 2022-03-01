@@ -15,7 +15,11 @@ class CycleDiscriminator(model.Model):
         super().__init__(model_parameters)
 
     def define_model(self):
-        input_layer = layers.Input(shape=self.model_parameters.input_shape)
+        input_layer = layers.Input(shape=[
+            self.model_parameters.img_height,
+            self.model_parameters.img_width,
+            self.model_parameters.num_channels
+        ])
 
         x = layers.Conv2D(filters=64, kernel_size=(3, 3), strides=(2, 2), padding='same')(input_layer)
         x = layers.LeakyReLU()(x)
