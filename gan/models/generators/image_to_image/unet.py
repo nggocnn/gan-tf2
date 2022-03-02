@@ -3,7 +3,7 @@ from easydict import EasyDict
 from tensorflow.keras import layers
 from tensorflow.keras.models import Model
 
-from gan.layers import advanced_layers
+from gan import advanced_layers
 from gan.models import model
 
 

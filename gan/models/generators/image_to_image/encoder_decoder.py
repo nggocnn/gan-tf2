@@ -4,7 +4,7 @@ from tensorflow.keras.models import Model
 from tensorflow.keras import layers
 
 from gan.models import model
-from gan.layers import advanced_layers
+from gan import advanced_layers
 
 
 class EncoderDecoderGenerator(model.Model):

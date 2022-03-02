@@ -1,11 +1,9 @@
-import tensorflow_addons as tfa
 from easydict import EasyDict
 from tensorflow import keras
 from tensorflow.keras.models import Model
 from tensorflow.keras import layers
 
 from gan.models import model
-from gan.layers import advanced_layers
 from gan.models.discriminators import patch_discriminator
 
 
