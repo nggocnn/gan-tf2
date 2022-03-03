@@ -3,7 +3,7 @@ from tensorflow.keras.optimizers import Adam
 from easydict import EasyDict
 
 from gan.callbacks import saver
-from gan.datasets import mnist
+from gan.datasets.mnist import MnistDataset
 from gan.models.discriminators import discriminator
 from gan.models.generators.latent_to_image import latent_to_image
 from gan.trainers import vanilla_gan_trainer
@@ -22,7 +22,7 @@ model_parameters = EasyDict({
     'save_images_every_n_steps':   10
 })
 
-dataset = mnist.MnistDataset(model_parameters)
+dataset = MnistDataset(model_parameters)
 
 
 def validation_dataset():
@@ -49,7 +49,7 @@ callbacks = [
     )
 ]
 
-gan_trainer = vanilla_gan_trainer.VanillaGANTrainer(
+gan_mnist_trainer = vanilla_gan_trainer.VanillaGANTrainer(
     batch_size=model_parameters.batch_size,
     generator=generator,
     discriminator=discriminator,
@@ -63,7 +63,7 @@ gan_trainer = vanilla_gan_trainer.VanillaGANTrainer(
     callbacks=callbacks,
 )
 
-gan_trainer.train(
+gan_mnist_trainer.train(
     dataset=dataset,
     num_epochs=model_parameters.num_epochs,
 )

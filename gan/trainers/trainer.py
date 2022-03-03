@@ -1,17 +1,14 @@
 import os
 from abc import abstractmethod
 from typing import List
-from tensorflow.keras.optimizers import Adam, Optimizer
+from tensorflow.keras.optimizers import Optimizer
 from tensorflow.keras.callbacks import Callback
 
 from tqdm import tqdm
 
-from gan.callbacks import basic_callback
-from gan.utils import logger
-from gan.callbacks import saver
+from gan.callbacks import basic_callback, gan_checkpoint_manager
 from gan.datasets.dataset import Dataset
 from gan.models.model import Model
-from gan.trainers import gan_checkpoint_manager
 from gan.utils import constants
 from gan.utils import logger
 
@@ -105,8 +102,6 @@ class GANTrainer:
                 losses = self.train_step(batch)
                 self.on_training_step_end()
                 self.logger.log_scalars(name='Losses', scalars=losses, step=global_step)
-                steps_per_second = 1. / dataset_tqdm.avg_time if dataset_tqdm.avg_time else 0.
-                self.logger.log_scalars(name='', scalars={'steps_per_second': steps_per_second}, step=self.global_step)
             self.on_epoch_end()
 
     def on_epoch_begin(self):

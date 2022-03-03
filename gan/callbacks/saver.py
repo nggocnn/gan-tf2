@@ -1,6 +1,6 @@
 import os
 import numpy as np
-from tensorflow.keras.callbacks import Callback
+from gan.callbacks.callback import Callback
 from gan.utils import visualizer
 
 

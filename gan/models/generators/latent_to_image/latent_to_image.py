@@ -14,13 +14,10 @@ class LatentToImageGenerator(model.Model):
         super().__init__(model_parameters)
 
     def define_model(self):
-        latent_input = layers.Input(shape=[
-            self.model_parameters.img_height,
-            self.model_parameters.img_width,
-            self.model_parameters.num_channels
-        ])
+        input_layer = layers.Input(shape=[self.model_parameters.latent_size])
 
-        x = layers.Dense(units=7 * 7 * 256, use_bias=False)(latent_input)
+        x = layers.Dense(units=(7 * 7 * 256), use_bias=False)(input_layer)
+        print(x.shape)
         x = layers.BatchNormalization()(x)
         x = layers.LeakyReLU()(x)
 
@@ -44,7 +41,8 @@ class LatentToImageGenerator(model.Model):
             padding='same', use_bias=False, activation='tanh'
         )(x)
 
-        generator = Model(name=self.model_name, inputs=latent_input, outputs=output_layer)
+        generator = Model(name=self.model_name, inputs=input_layer, outputs=output_layer)
+
         return generator
 
 
@@ -57,13 +55,13 @@ class LatentToImageCifar10Generator(model.Model):
         super().__init__(model_parameters)
 
     def define_model(self):
-        latent_input = layers.Input(shape=[
+        input_layer = layers.Input(shape=[
             self.model_parameters.img_height,
             self.model_parameters.img_width,
             self.model_parameters.num_channels
         ])
 
-        x = layers.Dense(units=8 * 8 * 256, use_bias=False)(latent_input)
+        x = layers.Dense(units=8 * 8 * 256, use_bias=False)(input_layer)
         x = layers.BatchNormalization()(x)
         x = layers.LeakyReLU()(x)
 
@@ -87,7 +85,7 @@ class LatentToImageCifar10Generator(model.Model):
             padding='same', use_bias=False, activation='tanh'
         )(x)
 
-        generator = Model(name=self.model_name, inputs=latent_input, outputs=output_layer)
+        generator = Model(name=self.model_name, inputs=input_layer, outputs=output_layer)
         return generator
 
 
@@ -100,13 +98,13 @@ class LatentToImageCifar10NearestNeighborUpSamplingGenerator(model.Model):
         super().__init__(model_parameters)
 
     def define_model(self):
-        latent_input = layers.Input(shape=[
+        input_layer = layers.Input(shape=[
             self.model_parameters.img_height,
             self.model_parameters.img_width,
             self.model_parameters.num_channels
         ])
 
-        x = layers.Dense(units=8 * 8 * 256, use_bias=False)(latent_input)
+        x = layers.Dense(units=8 * 8 * 256, use_bias=False)(input_layer)
         x = layers.BatchNormalization()(x)
         x = layers.LeakyReLU()(x)
 
@@ -132,5 +130,5 @@ class LatentToImageCifar10NearestNeighborUpSamplingGenerator(model.Model):
             padding='same', use_bias=False, activation='tanh'
         )(x)
 
-        generator = Model(name=self.model_name, inputs=latent_input, outputs=x)
+        generator = Model(name=self.model_name, inputs=input_layer, outputs=x)
         return generator

@@ -1,15 +1,14 @@
 import os
 
 import tensorflow as tf
+from gan.callbacks.callback import Callback
+from gan.utils import constants
+from gan.utils import logger
 
-from gans.callbacks import callback
-from gans.utils import constants
-from gans.utils import logging
-
-log = logging.get_logger(__name__)
+logger = logger.get_logger(__name__)
 
 
-class GANCheckpointManager(callback.Callback):
+class GANCheckpointManager(Callback):
 
     def __init__(
             self,
@@ -45,9 +44,9 @@ class GANCheckpointManager(callback.Callback):
             if latest_checkpoint is not None:
                 latest_checkpoint_epoch = int(latest_checkpoint[latest_checkpoint.index("-") + 1:])
                 self.checkpoint.restore(self.checkpoint_manager.latest_checkpoint)
-                log.info(f'Training regeneration from checkpoint: {self.root_checkpoint_path}.')
+                logger.info(f'Training regeneration from checkpoint: {self.root_checkpoint_path}.')
             else:
-                log.info('No checkpoints found. Starting training from scratch.')
+                logger.info('No checkpoints found. Starting training from scratch.')
         return latest_checkpoint_epoch
 
     def save(self, checkpoint_number):
@@ -56,8 +55,8 @@ class GANCheckpointManager(callback.Callback):
     def on_training_step_end(self, trainer):
         if trainer.global_step % trainer.save_model_every_n_step == 0:
             self.save(checkpoint_number=trainer.epoch)
-            log.info(f'Saved model for {trainer.global_step} step and {trainer.epoch} epoch.')
+            logger.info(f'Saved model for {trainer.global_step} step and {trainer.epoch} epoch.')
 
     def on_epoch_end(self, trainer):
         self.save(checkpoint_number=trainer.epoch)
-        log.info(f'Saved model for the end of training.')
+        logger.info(f'Saved model for the end of training.')

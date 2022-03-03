@@ -55,7 +55,7 @@ class StepsPerSecond(TensorboardLoggable):
             tf.summary.scalar('steps_per_second', steps_per_second, train_step)
 
 
-def get_logger(name=None, mod_name='gans-2.0', logger_verbosity=DEFAULT_LOGGER_VERBOSITY):
+def get_logger(name=None, mod_name='gans-tf2.x', logger_verbosity=DEFAULT_LOGGER_VERBOSITY):
     logger_name = mod_name if name is None else f'{mod_name}.{name}'
     logger = logging.getLogger(logger_name)
     logger.setLevel(logger_verbosity)

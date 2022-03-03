@@ -1,4 +1,4 @@
-from tensorflow.keras.callbacks import Callback
+from gan.callbacks.callback import Callback
 
 
 class GlobalStepIncrementer(Callback):

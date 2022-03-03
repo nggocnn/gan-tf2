@@ -5,8 +5,11 @@ from tensorflow import keras
 
 class Model(ABC):
     def __init__(self, model_parameters: EasyDict):
-        self.model_parameters = model_parameters
+        self._model_parameters_ = model_parameters
         self._model_ = self.define_model()
+
+    def __call__(self, inputs, **kwargs):
+        return self.model(inputs=inputs, **kwargs)
 
     @abstractmethod
     def define_model(self) -> keras.Model:
@@ -22,7 +25,7 @@ class Model(ABC):
 
     @property
     def model_parameters(self) -> EasyDict:
-        return self.model_parameters
+        return self._model_parameters_
 
     @property
     def num_channels(self) -> int:
@@ -34,3 +37,7 @@ class Model(ABC):
 
     def __repr__(self):
         return self.model_name
+
+    @model_parameters.setter
+    def model_parameters(self, value):
+        self._model_parameters_ = value
