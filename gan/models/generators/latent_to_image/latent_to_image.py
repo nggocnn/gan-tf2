@@ -55,11 +55,7 @@ class LatentToImageCifar10Generator(model.Model):
         super().__init__(model_parameters)
 
     def define_model(self):
-        input_layer = layers.Input(shape=[
-            self.model_parameters.img_height,
-            self.model_parameters.img_width,
-            self.model_parameters.num_channels
-        ])
+        input_layer = layers.Input(shape=[self.model_parameters.latent_size])
 
         x = layers.Dense(units=8 * 8 * 256, use_bias=False)(input_layer)
         x = layers.BatchNormalization()(x)
@@ -98,11 +94,7 @@ class LatentToImageCifar10NearestNeighborUpSamplingGenerator(model.Model):
         super().__init__(model_parameters)
 
     def define_model(self):
-        input_layer = layers.Input(shape=[
-            self.model_parameters.img_height,
-            self.model_parameters.img_width,
-            self.model_parameters.num_channels
-        ])
+        input_layer = layers.Input(shape=[self.model_parameters.latent_size])
 
         x = layers.Dense(units=8 * 8 * 256, use_bias=False)(input_layer)
         x = layers.BatchNormalization()(x)

@@ -14,11 +14,7 @@ class LatentToImageConditionalGenerator(model.Model):
         super().__init__(model_parameters)
 
     def define_model(self):
-        latent_input = layers.Input(shape=[
-            self.model_parameters.img_height,
-            self.model_parameters.img_width,
-            self.model_parameters.num_channels
-        ])
+        input_layer = layers.Input(shape=[self.model_parameters.latent_size])
 
         class_id = layers.Input(shape=[1])
 
@@ -26,7 +22,7 @@ class LatentToImageConditionalGenerator(model.Model):
         embedded_id = layers.Dense(units=7 * 7)(embedded_id)
         embedded_id = layers.Reshape(target_shape=(7, 7, 1))(embedded_id)
 
-        x = layers.Dense(units=7 * 7 * 256, use_bias=False)(latent_input)
+        x = layers.Dense(units=7 * 7 * 256, use_bias=False)(input_layer)
         x = layers.BatchNormalization()(x)
         x = layers.LeakyReLU()(x)
 
@@ -53,7 +49,7 @@ class LatentToImageConditionalGenerator(model.Model):
             padding='same', use_bias=False, activation='tanh'
         )(x)
 
-        generator = Model(name=self.model_name, inputs=[latent_input, class_id], outputs=output_layer)
+        generator = Model(name=self.model_name, inputs=[input_layer, class_id], outputs=output_layer)
         return generator
 
 
@@ -66,18 +62,14 @@ class LatentToImageCifar10CConditionalGenerator(model.Model):
         super().__init__(model_parameters)
 
     def define_model(self):
-        latent_input = layers.Input(shape=[
-            self.model_parameters.img_height,
-            self.model_parameters.img_width,
-            self.model_parameters.num_channels
-        ])
+        input_layer = layers.Input(shape=[self.model_parameters.latent_size])
         class_id = layers.Input(shape=[1])
 
         embedded_id = layers.Embedding(input_dim=10, output_dim=50)(class_id)
         embedded_id = layers.Dense(units=8 * 8)(embedded_id)
         embedded_id = layers.Reshape(target_shape=(8, 8, 1))(embedded_id)
 
-        x = layers.Dense(units=8 * 8 * 256, use_bias=False)(latent_input)
+        x = layers.Dense(units=8 * 8 * 256, use_bias=False)(input_layer)
         x = layers.BatchNormalization(momentum=0.9)(x)
         x = layers.LeakyReLU(alpha=0.1)(x)
         x = layers.Reshape((8, 8, 256))(x)
@@ -123,7 +115,7 @@ class LatentToImageCifar10CConditionalGenerator(model.Model):
             padding='same', use_bias=False, activation='tanh'
         )(x)
 
-        generator = Model(name=self.model_name, inputs=[latent_input, class_id], outputs=output_layer)
+        generator = Model(name=self.model_name, inputs=[input_layer, class_id], outputs=output_layer)
 
         return generator
 
@@ -137,18 +129,14 @@ class LatentToImageNNUpSamplingCifar10CConditionalGenerator(model.Model):
         super().__init__(model_parameters)
 
     def define_model(self):
-        latent_input = layers.Input(shape=[
-            self.model_parameters.img_height,
-            self.model_parameters.img_width,
-            self.model_parameters.num_channels
-        ])
+        input_layer = layers.Input(shape=[self.model_parameters.latent_size])
         class_id = layers.Input(shape=[1])
 
         embedded_id = layers.Embedding(input_dim=10, output_dim=50)(class_id)
         embedded_id = layers.Dense(units=8 * 8)(embedded_id)
         embedded_id = layers.Reshape(target_shape=(8, 8, 1))(embedded_id)
 
-        x = layers.Dense(units=8 * 8 * 256, use_bias=False)(latent_input)
+        x = layers.Dense(units=8 * 8 * 256, use_bias=False)(input_layer)
         x = layers.BatchNormalization()(x)
         x = layers.LeakyReLU()(x)
 
@@ -177,7 +165,7 @@ class LatentToImageNNUpSamplingCifar10CConditionalGenerator(model.Model):
             padding='same', use_bias=False, activation='tanh'
         )(x)
 
-        generator = Model(name=self.model_name, inputs=[latent_input, class_id], outputs=output_layer)
+        generator = Model(name=self.model_name, inputs=[input_layer, class_id], outputs=output_layer)
         return generator
 
 
@@ -190,18 +178,14 @@ class LatentToImageNNUpSamplingConditionalGenerator(model.Model):
         super().__init__(model_parameters)
 
     def define_model(self):
-        latent_input = layers.Input(shape=[
-            self.model_parameters.img_height,
-            self.model_parameters.img_width,
-            self.model_parameters.num_channels
-        ])
+        input_layer = layers.Input(shape=[self.model_parameters.latent_size])
         class_id = layers.Input(shape=[1])
 
         embedded_id = layers.Embedding(input_dim=10, output_dim=50)(class_id)
         embedded_id = layers.Dense(units=7 * 7)(embedded_id)
         embedded_id = layers.Reshape(target_shape=(7, 7, 1))(embedded_id)
 
-        x = layers.Dense(units=7 * 7 * 256, use_bias=False)(latent_input)
+        x = layers.Dense(units=7 * 7 * 256, use_bias=False)(input_layer)
         x = layers.BatchNormalization()(x)
         x = layers.LeakyReLU()(x)
 
@@ -231,5 +215,5 @@ class LatentToImageNNUpSamplingConditionalGenerator(model.Model):
             padding='same', use_bias=False, activation='tanh'
         )(x)
 
-        generator = Model(name=self.model_name, inputs=[latent_input, class_id], outputs=output_layer)
+        generator = Model(name=self.model_name, inputs=[input_layer, class_id], outputs=output_layer)
         return generator
